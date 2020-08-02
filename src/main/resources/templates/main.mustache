@@ -1,0 +1,14 @@
+<html>
+<head>
+    <title>CBConverter</title>
+</head>
+<form action="/logout" method="post">
+    <input type="hidden" name="_csrf" value="{{_csrf.token}}"/>
+    <input type="submit" value="Sign Out"/>
+</form>
+<body>
+<h1><p align="center">Welcome!</p></h1>
+<input type="hidden" name="_csrf" value="{{_csrf.token}}"/>
+<p>Click <a href="/history">here</a> to see converter.</p>
+</body>
+</html>

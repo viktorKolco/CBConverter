@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>CBConverter</title>
+</head>
+<form action="/logout" method="post">
+    <input type="hidden" name="_csrf" value="{{_csrf.token}}"/>
+    <input type="submit" value="Sign Out"/>
+</form>
+<style>
+    table {
+        border-collapse: collapse;
+    }
+
+    table, td, th {
+        border: 1px solid #999;
+        padding: 5px;
+    }
+</style>
+<body>
+<div align="center">
+    <h1>Конвертер</h1>
+    <form method="post">
+        <input type="hidden" name="_csrf" value="{{_csrf.token}}"/>
+        <input type="text" name="original_current" value="USD"/>
+        <input type="text" name="target_current" value="RUB"/>
+        <input type="number" step="any" name="amount_received" value="1">
+        <p align="center"><button type="submit">Конвертировать</button></p>
+    </form>
+
+</div>
+
+<h2><p align="center"><font size="5" color="black" face="Arial">История</font></p></h2>
+<input type="hidden" name="_csrf" value="{{_csrf.token}}"/>
+<table align="center">
+    <tr>
+        <th>Исходная валюта</th>
+        <th>Целевая валюта</th>
+        <th>Исходная сумма</th>
+        <th>Получаемая сумма</th>
+    </tr>
+    {{#histories}}
+        <tr>
+            <td>{{ORIGINAL_CURRENT}}</td>
+            <td>{{TARGET_CURRENCY}}</td>
+            <td>{{AMOUNT_RECEIVED}}</td>
+            <td>{{TOTAL_AMOUNT}}</td>
+        </tr>
+    {{/histories}}
+</table>
+</body>
+</html>
