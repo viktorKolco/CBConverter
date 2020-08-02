@@ -1,5 +1,6 @@
 package com.CBConverter.domain;
 
+import com.CBConverter.Converter;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -15,21 +16,17 @@ public class History {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int ID;
-
-    private int AMOUNT_RECEIVED;
+    private double AMOUNT_RECEIVED;
     private String ORIGINAL_CURRENT;
     private String TARGET_CURRENCY;
     private double TOTAL_AMOUNT;
-//    private Date DATE;
-
-
 
     public History(){}
 
-    public History(String original_current, String target_current, int amount_received, double totalAmount){
-        this.ORIGINAL_CURRENT = original_current;
-        this.TARGET_CURRENCY = target_current;
-        this.AMOUNT_RECEIVED = amount_received;
-        this.TOTAL_AMOUNT = totalAmount;
+    public History(Converter converter){
+        this.ORIGINAL_CURRENT = converter.getOriginal_current();
+        this.TARGET_CURRENCY = converter.getTarget_current();
+        this.AMOUNT_RECEIVED = converter.getAmount_received();
+        this.TOTAL_AMOUNT = converter.getTotalAmount();
     }
 }

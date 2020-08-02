@@ -1,5 +1,6 @@
 package com.CBConverter.controller;
 
+import com.CBConverter.Converter;
 import com.CBConverter.ResponseHelper;
 import com.CBConverter.domain.Currency;
 import com.CBConverter.domain.History;
@@ -11,7 +12,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -32,9 +32,8 @@ public class HistoryController {
 
     @PostMapping("/history")
     public String add(@RequestParam String original_current,
-                      @RequestParam String target_current, @RequestParam int amount_received) {
-        double totalAmount = amount_received * currencyRepository.findValueByChar_code(original_current);
-        History history = new History(original_current, target_current, amount_received, totalAmount);
+                      @RequestParam String target_current, @RequestParam double amount_received) {
+        History history = new History(new Converter(currencyRepository, original_current, target_current, amount_received));
         historyRepository.save(history);
         return "redirect:/history";
     }

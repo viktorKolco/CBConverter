@@ -31,10 +31,11 @@ public class ResponseHelper {
             e.printStackTrace();
         }
         try {
-             return parseXML(loadXMLFromString(toStringByInputStream(new InputStreamReader(connection.getInputStream(), "Cp1251"))));
+            assert connection != null;
+            return parseXML(loadXMLFromString(toStringByInputStream(new InputStreamReader(connection.getInputStream(), "Cp1251"))));
         } catch (ParserConfigurationException | IOException | SAXException e) {
             e.printStackTrace();
-            throw new AssertionError("BLA_BLA");
+            throw new AssertionError("Не получилось получить курсы валют");
         }
     }
 
@@ -60,7 +61,7 @@ public class ResponseHelper {
         int nominal = 0;
         double value = 0;
         int numCode = 0;
-        String description;
+        String description = null;
         Node root = document.getDocumentElement();
         System.out.println("List of currencies:");
         System.out.println();
@@ -102,7 +103,7 @@ public class ResponseHelper {
                 }
             }
             System.out.println("===========>>>>");
-            list.add(new Currency(id, numCode, charCode, nominal, value));
+            list.add(new Currency(id, numCode, charCode, nominal, value, description));
         }
         return list;
     }

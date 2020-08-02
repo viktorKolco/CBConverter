@@ -20,10 +20,11 @@ public class Currency {
 
     public Currency(){}
 
-    public Currency(String id, int numCode, String charCode, int nominal, double value){
+    public Currency(String id, int numCode, String charCode, int nominal, double value, String description){
         this.id = id;
         this.num_code = numCode;
         this.char_code = charCode;
+        this.description=description;
         this.nominal = nominal;
         this.value = value;
     }
