@@ -6,7 +6,7 @@ import com.CBConverter.domain.Currency;
 import com.CBConverter.domain.History;
 import com.CBConverter.repository.CurrencyRepository;
 import com.CBConverter.repository.HistoryRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,18 +14,17 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+@RequiredArgsConstructor
 @Controller
 public class ConverterController {
 
-    @Autowired
-    private HistoryRepository historyRepository;
-    @Autowired
-    private CurrencyRepository currencyRepository;
+    private final HistoryRepository historyRepository;
+
+    private final CurrencyRepository currencyRepository;
 
     @GetMapping("/history")
     public String history(Map<String, Object> model) {

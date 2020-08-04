@@ -23,10 +23,11 @@ http://www.cbr.ru/scripts/XML_daily.asp (дополнительная инфор
 произведена конвертаци. Историю можно посмотреть на той же странице конвертера или отдельной 
 вкладке (возможна реализация базовых фильтров). Остальная функциональность и визуал по желанию."
 
-login: user
-password: password
+login: 'user';
+password: 'password';
 
 Запросы для создания двух таблиц в БД:
+
 create table currency
 (
 	id varchar not null,
@@ -36,6 +37,7 @@ create table currency
 	nominal int not null,
 	value double precision not null
 );
+
 create table history
 (
 	id int not null,
