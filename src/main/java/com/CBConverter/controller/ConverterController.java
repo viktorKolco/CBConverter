@@ -1,30 +1,38 @@
 package com.CBConverter.controller;
 
-import com.CBConverter.Converter;
-import com.CBConverter.ResponseHelper;
-import com.CBConverter.domain.Currency;
-import com.CBConverter.domain.History;
+import com.CBConverter.entities.Currency;
+import com.CBConverter.entities.History;
 import com.CBConverter.repository.CurrencyRepository;
 import com.CBConverter.repository.HistoryRepository;
+import com.CBConverter.service.ConverterService;
+import com.CBConverter.service.ResponseService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
+import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-@RequiredArgsConstructor
 @Controller
+@Service
+@RequiredArgsConstructor
 public class ConverterController {
 
     private final HistoryRepository historyRepository;
 
     private final CurrencyRepository currencyRepository;
+
+    private final ConverterService converterService;
+
+    private final ResponseService responseService;
 
     @GetMapping("/history")
     public String history(Map<String, Object> model) {
@@ -47,33 +55,40 @@ public class ConverterController {
     }
 
     @GetMapping("/converter")
-    public String converter(Map<String, Object> model, Model totalAmount, Model amountReceived) {
-        Iterable<History> histories = historyRepository.findAll();
+    public String converter(Model originalCurrency, Model targetCurrency, Model totalAmount, Model amountReceived, Model originalCharCode, Model targetCharCode) {
+        List<Currency> list = responseService.getCurrenciesInfo();
+        currencyRepository.saveAll(list);
         Double total = historyRepository.findTotalAmountWithMaxId();
         if (total == null) total = 0d;
         Double amount = historyRepository.findAmountReceivedWithMaxId();
         if (amount == null) amount = 0d;
         totalAmount.addAttribute("totalAmount", total);
         amountReceived.addAttribute("amountReceived", amount);
-        model.put("histories", histories);
+        originalCurrency.addAttribute("originalCurrency", historyRepository.findOriginalCurrencyMaxId());
+        targetCurrency.addAttribute("targetCurrency", historyRepository.findTargetCurrencyMaxId());
+        targetCurrency.addAttribute("originalCharCode", historyRepository.findOriginalCurrencyMaxId().substring(0,3));
+        targetCurrency.addAttribute("targetCharCode", historyRepository.findTargetCurrencyMaxId().substring(0,3));
         return "converter";
     }
 
     @PostMapping("/converter")
-    public String add(@RequestParam String original_current,
-                      @RequestParam String target_current, @RequestParam double amount_received) {
-        History history = new History(new Converter(currencyRepository, original_current, target_current, amount_received));
+    public String add(@RequestParam String originalCurrent,
+                      @RequestParam String targetCurrent, @RequestParam double amountReceived) {
+        History history = new History(
+                converterService.toDescription(originalCurrent),
+                converterService.toDescription(targetCurrent),
+                amountReceived,
+                converterService.convert(originalCurrent, targetCurrent, amountReceived),
+                Date.from(LocalDate.now()
+                        .atStartOfDay()
+                        .atZone(ZoneId.systemDefault())
+                        .toInstant()));
         historyRepository.save(history);
         return "redirect:/converter";
     }
 
     @GetMapping
     public String main() {
-        ResponseHelper responseHelper = new ResponseHelper();
-        List<Currency> list = responseHelper.getCurrenciesInfo();
-        for (Currency currency : list) {
-            currencyRepository.save(currency);
-        }
         return "main";
     }
 

@@ -1,6 +1,8 @@
-package com.CBConverter;
+package com.CBConverter.service;
 
-import com.CBConverter.domain.Currency;
+import com.CBConverter.entities.Currency;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -19,7 +21,9 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ResponseHelper {
+@Service
+@RequiredArgsConstructor
+public class ResponseService {
     private static final List<Currency> list = new ArrayList<>();
 
     public List<Currency> getCurrenciesInfo() {
@@ -48,7 +52,6 @@ public class ResponseHelper {
     }
 
     public Document loadXMLFromString(String xml) throws ParserConfigurationException, IOException, SAXException {
-        System.out.println(xml);
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         DocumentBuilder builder = factory.newDocumentBuilder();
         InputSource is = new InputSource(new StringReader(xml));
@@ -63,8 +66,6 @@ public class ResponseHelper {
         int numCode = 0;
         String description = null;
         Node root = document.getDocumentElement();
-        System.out.println("List of currencies:");
-        System.out.println();
         NodeList valutes = root.getChildNodes();
         for (int i = 0; i < valutes.getLength(); i++) {
             id = valutes.item(i).getAttributes().getNamedItem("ID").getNodeValue();
@@ -102,8 +103,7 @@ public class ResponseHelper {
                     }
                 }
             }
-            System.out.println("===========>>>>");
-            list.add(new Currency(id, numCode, charCode, nominal, value, description));
+            list.add(new Currency(id, numCode, charCode, description, nominal, value));
         }
         return list;
     }

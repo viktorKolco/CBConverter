@@ -30,7 +30,7 @@ password: 'password';
 
 create table currency
 (
-	id varchar not null,
+	cb_id varchar not null,
 	num_code int not null,
 	char_code varchar not null,
 	description varchar not null,
