@@ -8,7 +8,7 @@ import javax.persistence.*;
 @Getter
 @Setter
 @Entity
-@Table(name="currency")
+@Table(name = "currency")
 public class Currency {
     @Id
     private String id;
@@ -18,13 +18,14 @@ public class Currency {
     private int nominal;
     private double value;
 
-    public Currency(){}
+    public Currency() {
+    }
 
-    public Currency(String id, int numCode, String charCode, int nominal, double value, String description){
+    public Currency(String id, int numCode, String charCode, int nominal, double value, String description) {
         this.id = id;
         this.num_code = numCode;
         this.char_code = charCode;
-        this.description=description;
+        this.description = description;
         this.nominal = nominal;
         this.value = value;
     }

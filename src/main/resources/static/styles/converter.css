@@ -1,0 +1,70 @@
+table {
+    border-collapse: collapse;
+}
+
+table, th {
+    border: 1px solid white;
+    padding: 5px;
+}
+
+.form_output {
+    font-size: 20px;
+    width:750px;
+    border: 1px solid black;
+    padding: 5px 5px 10px 0;
+    border-radius: 10px;
+    box-shadow: 0 4px 16px #ccc;
+}
+
+.form_input {
+    font-size: 20px;
+    width:700px;
+    border: 1px solid black;
+    padding: 5px 5px 10px 0;
+    border-radius: 10px;
+    box-shadow: 0 4px 16px #ccc;
+}
+
+.inner_form{
+    border: 1px solid black;
+    padding: 1px 1px 4px 4px;
+    margin-left: 6px;
+    position: relative;
+    right: 6px;
+    width:332px;
+    height: 20px;
+    float: right;
+}
+
+.amountReceived{
+    float: left;
+    width: 300px;
+}
+
+.td {
+    padding: 5px;
+    vertical-align: top;
+}
+
+#received {
+    height: 20px;
+    width: 332px;
+}
+
+.wrapper {
+    margin-top: 10px;
+}
+
+a {
+    padding: 4px 14px;
+    text-decoration: none;
+    color: #000000;
+    border: 1px solid black;
+    border-radius: 2px;
+}
+
+a:hover {
+    color: black;
+    background: linear-gradient(to bottom, #e0dede, #e0dede);
+    box-shadow: 0 0 2px 1px rgba(0, 0, 0, 0.2);
+}

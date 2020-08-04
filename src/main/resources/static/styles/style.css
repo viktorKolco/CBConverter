@@ -1,0 +1,26 @@
+table {
+    border-collapse: collapse;
+}
+
+table, td, th {
+    border: 1px solid #999;
+    padding: 5px;
+}
+
+.wrapper {
+    margin-top: 10px;
+}
+
+a {
+    padding: 4px 4px;
+    text-decoration: none;
+    color: #000000;
+    border: 1px solid black;
+    border-radius: 2px;
+}
+
+a:hover {
+    color: black;
+    background: linear-gradient(to bottom, #e0dede, #e0dede);
+    box-shadow: 0 0 2px 1px rgba(0, 0, 0, 0.2);
+}

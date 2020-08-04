@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="/styles/converter.css" type="text/css"/>
+    <title>CBConverter</title>
+</head>
+<form action="/logout" method="post">
+    <input type="hidden" name="_csrf" value="{{_csrf.token}}"/>
+    <input type="submit" value="Выйти"/>
+</form>
+<div class="wrapper">
+    <input type="hidden" name="_csrf" value="{{_csrf.token}}"/>
+    <a href="/history">История</a>
+</div>
+<body>
+<div align="center">
+    <div align="center" class="form_output">
+        <h1>Конвертер</h1>
+        <form method="post">
+            <table width="50%" cellspacing="0" cellpadding="4">
+                <tr>
+                    <td><select name="original_current" value="{{amountReceived}}">
+                        <option value="USD"> USD (Доллар США)</option>
+                        <option value="RUB"> RUB (Российский рубль)</option>
+                        <option value="XDR"> XDR (СДР (специальные права заимствования)</option>
+                        <option value="SGD"> SGD (Сингапурский доллар)</option>
+                        <option value="TJS"> TJS (Таджикских сомони)</option>
+                        <option value="TRY"> TRY (Турецкая лира)</option>
+                        <option value="TMT"> TMT (Новый туркменский манат)</option>
+                        <option value="UZS"> UZS (Узбекских сумов)</option>
+                        <option value="AUD"> AUD (Австралийский доллар)</option>
+                        <option value="AZN"> AZN (Азербайджанский манат)</option>
+                        <option value="GBP"> GBP (Фунт стерлингов Соединенного королевства)</option>
+                        <option value="AMD"> AMD (Армянских драмов)</option>
+                        <option value="BYN"> BYN (Белорусский рубль)</option>
+                        <option value="BGN"> BGN (Болгарский лев)</option>
+                        <option value="BRL"> BRL (Бразильский реал)</option>
+                        <option value="HUF"> HUF (Венгерских форинтов)</option>
+                        <option value="HKD"> HKD (Гонконгских долларов)</option>
+                        <option value="DKK"> DKK (Датская крона)</option>
+                        <option value="EUR"> EUR (Евро)</option>
+                        <option value="INR"> INR (Индийских рупий)</option>
+                        <option value="KZT"> KZT (Казахстанских тенге)</option>
+                        <option value="CAD"> CAD (Канадский доллар)</option>
+                        <option value="KGS"> KGS (Киргизских сомов)</option>
+                        <option value="CNY"> CNY (Китайский юань)</option>
+                        <option value="MDL"> MDL (Молдавских леев)</option>
+                        <option value="NOK"> NOK (Норвежских крон</option>
+                        <option value="PLN"> PLN (Польский злотый)</option>
+                        <option value="RON"> RON (Румынский лей)</option>
+                        <option value="UAH"> UAH (Украинских гривен)</option>
+                        <option value="CZK"> CZK (Чешских крон)</option>
+                        <option value="SEK"> SEK (Шведских крон)</option>
+                        <option value="CHF"> CHF (Швейцарский франк)</option>
+                        <option value="ZAR"> ZAR (Южноафриканских рэндов)</option>
+                        <option value="KRW"> KRW (Вон Республики Корея)</option>
+                        <option value="JPY"> JPY (Японских иен)</option>
+                    </select></td>
+                    <td><select name="target_current" align="center">
+                        <option value="RUB"> RUB (Российский рубль)</option>
+                        <option value="USD"> USD (Доллар США)</option>
+                        <option value="XDR"> XDR (СДР (специальные права заимствования)</option>
+                        <option value="SGD"> SGD (Сингапурский доллар)</option>
+                        <option value="TJS"> TJS (Таджикских сомони)</option>
+                        <option value="TRY"> TRY (Турецкая лира)</option>
+                        <option value="TMT"> TMT (Новый туркменский манат)</option>
+                        <option value="UZS"> UZS (Узбекских сумов)</option>
+                        <option value="AUD"> AUD (Австралийский доллар)</option>
+                        <option value="AZN"> AZN (Азербайджанский манат)</option>
+                        <option value="GBP"> GBP (Фунт стерлингов Соединенного королевства)</option>
+                        <option value="AMD"> AMD (Армянских драмов)</option>
+                        <option value="BYN"> BYN (Белорусский рубль)</option>
+                        <option value="BGN"> BGN (Болгарский лев)</option>
+                        <option value="BRL"> BRL (Бразильский реал)</option>
+                        <option value="HUF"> HUF (Венгерских форинтов)</option>
+                        <option value="HKD"> HKD (Гонконгских долларов)</option>
+                        <option value="DKK"> DKK (Датская крона)</option>
+                        <option value="EUR"> EUR (Евро)</option>
+                        <option value="INR"> INR (Индийских рупий)</option>
+                        <option value="KZT"> KZT (Казахстанских тенге)</option>
+                        <option value="CAD"> CAD (Канадский доллар)</option>
+                        <option value="KGS"> KGS (Киргизских сомов)</option>
+                        <option value="CNY"> CNY (Китайский юань)</option>
+                        <option value="MDL"> MDL (Молдавских леев)</option>
+                        <option value="NOK"> NOK (Норвежских крон</option>
+                        <option value="PLN"> PLN (Польский злотый)</option>
+                        <option value="RON"> RON (Румынский лей)</option>
+                        <option value="UAH"> UAH (Украинских гривен)</option>
+                        <option value="CZK"> CZK (Чешских крон)</option>
+                        <option value="SEK"> SEK (Шведских крон)</option>
+                        <option value="CHF"> CHF (Швейцарский франк)</option>
+                        <option value="ZAR"> ZAR (Южноафриканских рэндов)</option>
+                        <option value="KRW"> KRW (Вон Республики Корея)</option>
+                        <option value="JPY"> JPY (Японских иен)</option>
+                    </select></td>
+                </tr>
+                <input type="hidden" name="_csrf" value="{{_csrf.token}}"/>
+                <tr>
+                    <td><input type="number" type="number" step="any" name="amount_received" id="received" value="{{amountReceived}}">
+                    </td>
+                    <td align="center">
+                        <div class="inner_form" align="left">
+                            <output>
+                                {{totalAmount}}
+                            </output>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+            <input type="submit" value="Конвертировать">
+        </form>
+    </div>
+</div>
+</body>
+</html>
