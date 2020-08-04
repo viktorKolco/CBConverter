@@ -22,3 +22,23 @@ http://www.cbr.ru/scripts/XML_daily.asp (дополнительная инфор
 история произведенных конвертаций с записью в базу данных со ссылкой на курс по которой была 
 произведена конвертаци. Историю можно посмотреть на той же странице конвертера или отдельной 
 вкладке (возможна реализация базовых фильтров). Остальная функциональность и визуал по желанию."
+
+Запросы для создания двух таблиц в БД:
+create table currency
+(
+	id varchar not null,
+	num_code int not null,
+	char_code varchar not null,
+	description varchar not null,
+	nominal int not null,
+	value double precision not null
+);
+create table history
+(
+	id int not null,
+	amount_received double precision not null,
+	original_current varchar not null,
+	target_currency varchar not null,
+	total_amount int not null,
+	date date not null
+);
