@@ -14,19 +14,19 @@ import static java.lang.String.format;
 public class ConverterService {
     private final CurrencyRepository currencyRepository;
 
-    public double convert(String originalcurrency, String targetcurrency, double amountReceived) {
+    public double convert(String originalCurrency, String targetCurrency, double amountReceived) {
         BigDecimal bigDecimal = new BigDecimal(Double.toString(amountReceived));
         bigDecimal = bigDecimal.setScale(3, RoundingMode.HALF_UP);
         amountReceived = bigDecimal.doubleValue();
         double originalCurrencyInRubles;
-        if (originalcurrency.equals("RUB")) originalCurrencyInRubles = amountReceived;
+        if (originalCurrency.equals("RUB")) originalCurrencyInRubles = amountReceived;
         else {
-            originalCurrencyInRubles = amountReceived * currencyRepository.findValueByChar_code(originalcurrency) / currencyRepository.findNominalByChar_Code(originalcurrency);
+            originalCurrencyInRubles = amountReceived * currencyRepository.findValueByChar_code(originalCurrency) / currencyRepository.findNominalByChar_Code(originalCurrency);
         }
         double targetCurrencyInRubles;
-        if (targetcurrency.equals("RUB")) targetCurrencyInRubles = 1;
+        if (targetCurrency.equals("RUB")) targetCurrencyInRubles = 1;
         else
-            targetCurrencyInRubles = currencyRepository.findValueByChar_code(targetcurrency) * currencyRepository.findNominalByChar_Code(targetcurrency);
+            targetCurrencyInRubles = currencyRepository.findValueByChar_code(targetCurrency) * currencyRepository.findNominalByChar_Code(targetCurrency);
         double totalAmount = originalCurrencyInRubles / targetCurrencyInRubles;
         bigDecimal = new BigDecimal(Double.toString(totalAmount));
         bigDecimal = bigDecimal.setScale(3, RoundingMode.HALF_UP);
