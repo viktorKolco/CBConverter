@@ -19,14 +19,14 @@ public class History {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int ID;
     private double AMOUNT_RECEIVED;
-    private String ORIGINAL_CURRENT;
+    private String ORIGINAL_currency;
     private String TARGET_CURRENCY;
     private double TOTAL_AMOUNT;
     private Date DATE;
 
-    public History(String originalCurrent, String targetCurrent, Double amountReceived, Double totalAmount, Date date) {
-        this.ORIGINAL_CURRENT = originalCurrent;
-        this.TARGET_CURRENCY = targetCurrent;
+    public History(String originalCurrency, String targetCurrency, Double amountReceived, Double totalAmount, Date date) {
+        this.ORIGINAL_currency = originalCurrency;
+        this.TARGET_CURRENCY = targetCurrency;
         this.AMOUNT_RECEIVED = amountReceived;
         this.TOTAL_AMOUNT = totalAmount;
         this.DATE = date;

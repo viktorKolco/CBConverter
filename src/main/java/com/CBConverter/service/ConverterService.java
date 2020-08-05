@@ -14,20 +14,20 @@ import static java.lang.String.format;
 public class ConverterService {
     private final CurrencyRepository currencyRepository;
 
-    public double convert(String originalCurrent, String targetCurrent, double amountReceived) {
+    public double convert(String originalcurrency, String targetcurrency, double amountReceived) {
         BigDecimal bigDecimal = new BigDecimal(Double.toString(amountReceived));
         bigDecimal = bigDecimal.setScale(3, RoundingMode.HALF_UP);
         amountReceived = bigDecimal.doubleValue();
-        double originalCurrentInRubles;
-        if (originalCurrent.equals("RUB")) originalCurrentInRubles = amountReceived;
+        double originalCurrencyInRubles;
+        if (originalcurrency.equals("RUB")) originalCurrencyInRubles = amountReceived;
         else {
-            originalCurrentInRubles = amountReceived * currencyRepository.findValueByChar_code(originalCurrent) / currencyRepository.findNominalByChar_Code(originalCurrent);
+            originalCurrencyInRubles = amountReceived * currencyRepository.findValueByChar_code(originalcurrency) / currencyRepository.findNominalByChar_Code(originalcurrency);
         }
-        double targetCurrentInRubles;
-        if (targetCurrent.equals("RUB")) targetCurrentInRubles = 1;
+        double targetCurrencyInRubles;
+        if (targetcurrency.equals("RUB")) targetCurrencyInRubles = 1;
         else
-            targetCurrentInRubles = currencyRepository.findValueByChar_code(targetCurrent) * currencyRepository.findNominalByChar_Code(targetCurrent);
-        double totalAmount = originalCurrentInRubles / targetCurrentInRubles;
+            targetCurrencyInRubles = currencyRepository.findValueByChar_code(targetcurrency) * currencyRepository.findNominalByChar_Code(targetcurrency);
+        double totalAmount = originalCurrencyInRubles / targetCurrencyInRubles;
         bigDecimal = new BigDecimal(Double.toString(totalAmount));
         bigDecimal = bigDecimal.setScale(3, RoundingMode.HALF_UP);
         return bigDecimal.doubleValue();

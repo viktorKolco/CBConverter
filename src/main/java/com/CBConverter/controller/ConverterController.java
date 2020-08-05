@@ -68,13 +68,13 @@ public class ConverterController {
     }
 
     @PostMapping("/converter")
-    public String add(@RequestParam String originalCurrent,
-                      @RequestParam String targetCurrent, @RequestParam double amountReceived) {
+    public String add(@RequestParam String originalCurrency,
+                      @RequestParam String targetCurrency, @RequestParam double postAmountReceived) {
         History history = new History(
-                converterService.toDescription(originalCurrent),
-                converterService.toDescription(targetCurrent),
-                amountReceived,
-                converterService.convert(originalCurrent, targetCurrent, amountReceived),
+                converterService.toDescription(originalCurrency),
+                converterService.toDescription(targetCurrency),
+                postAmountReceived,
+                converterService.convert(originalCurrency, targetCurrency, postAmountReceived),
                 Date.from(LocalDate.now()
                         .atStartOfDay()
                         .atZone(ZoneId.systemDefault())

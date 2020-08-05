@@ -32,18 +32,15 @@ create table currency
 (
 	cb_id varchar not null,
 	num_code int not null,
-	char_code varchar not null,
-	description varchar not null,
+	description varchar,
 	nominal int not null,
 	value double precision not null
 );
-
 create table history
 (
 	id int not null,
-	amount_received double precision not null,
-	original_current varchar not null,
+	original_currency varchar not null,
 	target_currency varchar not null,
-	total_amount int not null,
+	total_amount double precision not null,
 	date date not null
 );

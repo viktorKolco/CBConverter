@@ -69,7 +69,6 @@ public class ResponseService {
         NodeList valutes = root.getChildNodes();
         for (int i = 0; i < valutes.getLength(); i++) {
             id = valutes.item(i).getAttributes().getNamedItem("ID").getNodeValue();
-            System.out.println(id);
             Node valute = valutes.item(i);
             if (valute.getNodeType() != Node.TEXT_NODE) {
                 NodeList props = valute.getChildNodes();
@@ -79,23 +78,18 @@ public class ResponseService {
                         switch (j) {
                             case (0):
                                 numCode = Integer.parseInt(prop.getChildNodes().item(0).getTextContent());
-                                System.out.println(prop.getNodeName() + ":" + numCode);
                                 break;
                             case (1):
                                 charCode = prop.getChildNodes().item(0).getTextContent();
-                                System.out.println(prop.getNodeName() + ":" + charCode);
                                 break;
                             case (2):
                                 nominal = Integer.parseInt(prop.getChildNodes().item(0).getTextContent());
-                                System.out.println(prop.getNodeName() + ":" + nominal);
                                 break;
                             case (3):
                                 description = prop.getChildNodes().item(0).getTextContent();
-                                System.out.println(prop.getNodeName() + ":" + description);
                                 break;
                             case (4):
                                 value = Double.parseDouble(prop.getChildNodes().item(0).getTextContent().replace(',', '.'));
-                                System.out.println(prop.getNodeName() + ":" + value);
                                 break;
                             default:
                                 break;

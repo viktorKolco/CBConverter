@@ -12,14 +12,6 @@ public interface HistoryRepository extends CrudRepository<History, Integer> {
             nativeQuery = true)
     Double findTotalAmountWithMaxId();
 
-    @Query(value = "select h.original_current from history h order by h.id desc limit 1",
-            nativeQuery = true)
-    String findOriginalCurrencyMaxId();
-
-    @Query(value = "select h.target_currency from history h order by h.id desc limit 1",
-            nativeQuery = true)
-    String findTargetCurrencyMaxId();
-
     @Query(value = "select h.amount_received from history h order by h.id desc limit 1",
             nativeQuery = true)
     Double findAmountReceivedWithMaxId();
