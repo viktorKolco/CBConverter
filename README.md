@@ -34,13 +34,15 @@ create table currency
 	num_code int not null,
 	description varchar,
 	nominal int not null,
-	value double precision not null
+	value numeric not null,
+	char_code varchar not null
 );
 create table history
 (
 	id int not null,
 	original_currency varchar not null,
 	target_currency varchar not null,
-	total_amount double precision not null,
-	date date not null
+	total_amount numeric not null,
+	date date not null,
+	amount_received numeric not null
 );

@@ -16,6 +16,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.StringReader;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
@@ -97,7 +99,7 @@ public class ResponseService {
                     }
                 }
             }
-            list.add(new Currency(id, numCode, charCode, description, nominal, value));
+            list.add(new Currency(id, numCode, charCode, description, nominal, new BigDecimal(value).setScale(3, RoundingMode.HALF_UP)));
         }
         return list;
     }

@@ -14,26 +14,24 @@ import static java.lang.String.format;
 public class ConverterService {
     private final CurrencyRepository currencyRepository;
 
-    public double convert(String originalCurrency, String targetCurrency, double amountReceived) {
-        BigDecimal bigDecimal = new BigDecimal(Double.toString(amountReceived));
-        bigDecimal = bigDecimal.setScale(3, RoundingMode.HALF_UP);
-        amountReceived = bigDecimal.doubleValue();
-        double originalCurrencyInRubles;
+    public BigDecimal convert(String originalCurrency, String targetCurrency, BigDecimal amountReceived) {
+        amountReceived = amountReceived.setScale(3, RoundingMode.HALF_UP);
+        BigDecimal originalCurrencyInRubles;
         if (originalCurrency.equals("RUB")) originalCurrencyInRubles = amountReceived;
         else {
-            originalCurrencyInRubles = amountReceived * currencyRepository.findValueByChar_code(originalCurrency) / currencyRepository.findNominalByChar_Code(originalCurrency);
+            originalCurrencyInRubles = amountReceived
+                    .multiply(currencyRepository.findValueByChar_code(originalCurrency))
+                    .divide(BigDecimal.valueOf(currencyRepository.findNominalByChar_Code(originalCurrency)), RoundingMode.HALF_UP);
         }
-        double targetCurrencyInRubles;
-        if (targetCurrency.equals("RUB")) targetCurrencyInRubles = 1;
+        BigDecimal targetCurrencyInRubles;
+        if (targetCurrency.equals("RUB")) targetCurrencyInRubles = new BigDecimal(1);
         else
-            targetCurrencyInRubles = currencyRepository.findValueByChar_code(targetCurrency) * currencyRepository.findNominalByChar_Code(targetCurrency);
-        double totalAmount = originalCurrencyInRubles / targetCurrencyInRubles;
-        bigDecimal = new BigDecimal(Double.toString(totalAmount));
-        bigDecimal = bigDecimal.setScale(3, RoundingMode.HALF_UP);
-        return bigDecimal.doubleValue();
+            targetCurrencyInRubles = currencyRepository.findValueByChar_code(targetCurrency)
+                    .multiply(BigDecimal.valueOf(currencyRepository.findNominalByChar_Code(targetCurrency)));
+        return originalCurrencyInRubles.divide(targetCurrencyInRubles, 3, RoundingMode.HALF_UP);
     }
 
-    public String toDescription(String currency){
+    public String toDescription(String currency) {
         return format("%s (%s)", currency, (currencyRepository.findDescriptionByChar_Code(currency) == null) ? "Российский рубль"
                 : currencyRepository.findDescriptionByChar_Code(currency));
     }

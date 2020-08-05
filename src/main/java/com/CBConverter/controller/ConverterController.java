@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;
@@ -69,7 +70,7 @@ public class ConverterController {
 
     @PostMapping("/converter")
     public String add(@RequestParam String originalCurrency,
-                      @RequestParam String targetCurrency, @RequestParam double postAmountReceived) {
+                      @RequestParam String targetCurrency, @RequestParam BigDecimal postAmountReceived) {
         History history = new History(
                 converterService.toDescription(originalCurrency),
                 converterService.toDescription(targetCurrency),

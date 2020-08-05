@@ -4,11 +4,13 @@ import com.CBConverter.entities.Currency;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
+import java.math.BigDecimal;
+
 public interface CurrencyRepository extends CrudRepository<Currency, Long> {
 
     @Query(value = "select c.value from currency c where c.char_code = ?1",
             nativeQuery = true)
-    double findValueByChar_code(String charCode);
+    BigDecimal findValueByChar_code(String charCode);
 
     @Query(value = "select c.nominal from currency c where c.char_code = ?1",
             nativeQuery = true)

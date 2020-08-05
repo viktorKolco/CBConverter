@@ -8,6 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import java.math.BigDecimal;
 import java.util.Date;
 
 @Getter
@@ -18,13 +19,13 @@ public class History {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int ID;
-    private double AMOUNT_RECEIVED;
+    private BigDecimal AMOUNT_RECEIVED;
     private String ORIGINAL_currency;
     private String TARGET_CURRENCY;
-    private double TOTAL_AMOUNT;
+    private BigDecimal TOTAL_AMOUNT;
     private Date DATE;
 
-    public History(String originalCurrency, String targetCurrency, Double amountReceived, Double totalAmount, Date date) {
+    public History(String originalCurrency, String targetCurrency, BigDecimal amountReceived, BigDecimal totalAmount, Date date) {
         this.ORIGINAL_currency = originalCurrency;
         this.TARGET_CURRENCY = targetCurrency;
         this.AMOUNT_RECEIVED = amountReceived;
