@@ -55,7 +55,7 @@ public class ConverterController {
     }
 
     @GetMapping("/converter")
-    public String converter(Model originalCurrency, Model targetCurrency, Model totalAmount, Model amountReceived, Model originalCharCode, Model targetCharCode) {
+    public String converter(Model totalAmount, Model amountReceived) {
         List<Currency> list = responseService.getCurrenciesInfo();
         currencyRepository.saveAll(list);
         Double total = historyRepository.findTotalAmountWithMaxId();
@@ -64,10 +64,6 @@ public class ConverterController {
         if (amount == null) amount = 0d;
         totalAmount.addAttribute("totalAmount", total);
         amountReceived.addAttribute("amountReceived", amount);
-        originalCurrency.addAttribute("originalCurrency", historyRepository.findOriginalCurrencyMaxId());
-        targetCurrency.addAttribute("targetCurrency", historyRepository.findTargetCurrencyMaxId());
-        targetCurrency.addAttribute("originalCharCode", historyRepository.findOriginalCurrencyMaxId().substring(0,3));
-        targetCurrency.addAttribute("targetCharCode", historyRepository.findTargetCurrencyMaxId().substring(0,3));
         return "converter";
     }
 
