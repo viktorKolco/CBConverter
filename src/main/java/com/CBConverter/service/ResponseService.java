@@ -2,6 +2,7 @@ package com.CBConverter.service;
 
 import com.CBConverter.entities.Currency;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
@@ -23,12 +24,14 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class ResponseService {
-    private static final List<Currency> list = new ArrayList<>();
 
+    private static final List<Currency> list = new ArrayList<>();
     public List<Currency> getCurrenciesInfo() {
+
         String url = "http://www.cbr.ru/scripts/XML_daily.asp";
         HttpURLConnection connection = null;
         try {
@@ -69,6 +72,9 @@ public class ResponseService {
         String description = null;
         Node root = document.getDocumentElement();
         NodeList valutes = root.getChildNodes();
+        log.info("==================================");
+        log.info("   Информация по валютам из ЦБ:   ");
+        log.info("==================================");
         for (int i = 0; i < valutes.getLength(); i++) {
             id = valutes.item(i).getAttributes().getNamedItem("ID").getNodeValue();
             Node valute = valutes.item(i);
@@ -80,18 +86,23 @@ public class ResponseService {
                         switch (j) {
                             case (0):
                                 numCode = Integer.parseInt(prop.getChildNodes().item(0).getTextContent());
+                                log.info("numCode: '{}'", numCode);
                                 break;
                             case (1):
                                 charCode = prop.getChildNodes().item(0).getTextContent();
+                                log.info("charCode: '{}'", charCode);
                                 break;
                             case (2):
                                 nominal = Integer.parseInt(prop.getChildNodes().item(0).getTextContent());
+                                log.info("nominal: '{}'", nominal);
                                 break;
                             case (3):
                                 description = prop.getChildNodes().item(0).getTextContent();
+                                log.info("description: '{}'", description);
                                 break;
                             case (4):
                                 value = Double.parseDouble(prop.getChildNodes().item(0).getTextContent().replace(',', '.'));
+                                log.info("value: '{}'", value);
                                 break;
                             default:
                                 break;
@@ -100,6 +111,7 @@ public class ResponseService {
                 }
             }
             list.add(new Currency(id, numCode, charCode, description, nominal, new BigDecimal(value).setScale(3, RoundingMode.HALF_UP)));
+            log.info("==================================");
         }
         return list;
     }
