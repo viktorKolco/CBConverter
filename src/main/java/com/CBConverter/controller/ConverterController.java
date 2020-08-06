@@ -56,26 +56,34 @@ public class ConverterController {
     }
 
     @GetMapping("/converter")
-    public String converter(Model totalAmount, Model amountReceived) {
+    public String converter(Model amountReceived, Model totalAmount, Model originalCurrency, Model targetCurrency, Model originalChar, Model targetChar) {
         List<Currency> list = responseService.getCurrenciesInfo();
         currencyRepository.saveAll(list);
-        Double total = historyRepository.findTotalAmountWithMaxId();
-        if (total == null) total = 0d;
-        Double amount = historyRepository.findAmountReceivedWithMaxId();
-        if (amount == null) amount = 0d;
+        BigDecimal total = historyRepository.findTotalAmountWithMaxId();
+        if (total == null) total = new BigDecimal(0);
+        BigDecimal amount = historyRepository.findAmountReceivedWithMaxId();
+        if (amount == null) amount = new BigDecimal(0);
         totalAmount.addAttribute("totalAmount", total);
         amountReceived.addAttribute("amountReceived", amount);
+        String original = historyRepository.findOriginalCurrencyWithMaxId();
+        String target = historyRepository.findTargetCurrencyWithMaxId();
+        if (original == null) original = "Введите валюту";
+        if (target == null) target = "Введите валюту";
+        originalCurrency.addAttribute("originalCurrency", original);
+        targetCurrency.addAttribute("targetCurrency", target);
+        originalChar.addAttribute("originalChar", original.substring(0,3));
+        targetChar.addAttribute("targetChar", target.substring(0,3));
         return "converter";
     }
 
     @PostMapping("/converter")
-    public String add(@RequestParam String originalCurrency,
-                      @RequestParam String targetCurrency, @RequestParam BigDecimal postAmountReceived) {
+    public String add(@RequestParam String postOriginalCurrency,
+                      @RequestParam String postTargetCurrency, @RequestParam BigDecimal postAmountReceived) {
         History history = new History(
-                converterService.toDescription(originalCurrency),
-                converterService.toDescription(targetCurrency),
+                converterService.toDescription(postOriginalCurrency),
+                converterService.toDescription(postTargetCurrency),
                 postAmountReceived,
-                converterService.convert(originalCurrency, targetCurrency, postAmountReceived),
+                converterService.convert(postOriginalCurrency, postTargetCurrency, postAmountReceived),
                 Date.from(LocalDate.now()
                         .atStartOfDay()
                         .atZone(ZoneId.systemDefault())
