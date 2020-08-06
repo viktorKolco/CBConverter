@@ -23,12 +23,13 @@ public class ConverterService {
                     .multiply(currencyRepository.findValueByChar_code(originalCurrency))
                     .divide(BigDecimal.valueOf(currencyRepository.findNominalByChar_Code(originalCurrency)), RoundingMode.HALF_UP);
         }
-        BigDecimal targetCurrencyInRubles;
-        if (targetCurrency.equals("RUB")) targetCurrencyInRubles = new BigDecimal(1);
-        else
-            targetCurrencyInRubles = currencyRepository.findValueByChar_code(targetCurrency)
-                    .multiply(BigDecimal.valueOf(currencyRepository.findNominalByChar_Code(targetCurrency)));
-        return originalCurrencyInRubles.divide(targetCurrencyInRubles, 3, RoundingMode.HALF_UP);
+        if (!targetCurrency.equals("RUB")) {
+            return originalCurrencyInRubles.multiply(
+                    BigDecimal.valueOf(currencyRepository.findNominalByChar_Code(targetCurrency)))
+                    .divide(currencyRepository.findValueByChar_code(targetCurrency), RoundingMode.HALF_UP);
+        } else {
+            return originalCurrencyInRubles.divide(new BigDecimal(1), 3, RoundingMode.HALF_UP);
+        }
     }
 
     public String toDescription(String currency) {
