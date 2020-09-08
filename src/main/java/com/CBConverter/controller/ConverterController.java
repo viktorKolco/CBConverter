@@ -56,7 +56,9 @@ public class ConverterController {
     }
 
     @GetMapping("/converter")
-    public String converter(Model amountReceived, Model totalAmount, Model originalCurrency, Model targetCurrency, Model originalChar, Model targetChar) {
+    public String converter(Model amountReceived, Model totalAmount, Model originalCurrency,
+                            Model targetCurrency, Model originalChar, Model targetChar) {
+        //todo: вынести отсюда
         List<Currency> list = responseService.getCurrenciesInfo();
         currencyRepository.saveAll(list);
         BigDecimal total = historyRepository.findTotalAmountWithMaxId();
@@ -71,8 +73,8 @@ public class ConverterController {
         if (target == null) target = "Введите валюту";
         originalCurrency.addAttribute("originalCurrency", original);
         targetCurrency.addAttribute("targetCurrency", target);
-        originalChar.addAttribute("originalChar", original.substring(0,3));
-        targetChar.addAttribute("targetChar", target.substring(0,3));
+        originalChar.addAttribute("originalChar", original.substring(0, 3));
+        targetChar.addAttribute("targetChar", target.substring(0, 3));
         return "converter";
     }
 
