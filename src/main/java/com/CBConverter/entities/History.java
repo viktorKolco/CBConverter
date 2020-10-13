@@ -16,20 +16,33 @@ import java.util.Date;
 @Entity
 @NoArgsConstructor
 public class History {
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int ID;
     private BigDecimal AMOUNT_RECEIVED;
-    private String ORIGINAL_currency;
+    private String ORIGINAL_CURRENCY;
     private String TARGET_CURRENCY;
     private BigDecimal TOTAL_AMOUNT;
     private Date DATE;
 
     public History(String originalCurrency, String targetCurrency, BigDecimal amountReceived, BigDecimal totalAmount, Date date) {
-        this.ORIGINAL_currency = originalCurrency;
+        this.ORIGINAL_CURRENCY = originalCurrency;
         this.TARGET_CURRENCY = targetCurrency;
         this.AMOUNT_RECEIVED = amountReceived;
         this.TOTAL_AMOUNT = totalAmount;
         this.DATE = date;
+    }
+
+    @Override
+    public String toString() {
+        return "History{" +
+                "ID=" + ID +
+                ", AMOUNT_RECEIVED=" + AMOUNT_RECEIVED +
+                ", ORIGINAL_currency='" + ORIGINAL_CURRENCY + '\'' +
+                ", TARGET_CURRENCY='" + TARGET_CURRENCY + '\'' +
+                ", TOTAL_AMOUNT=" + TOTAL_AMOUNT +
+                ", DATE=" + DATE +
+                '}';
     }
 }

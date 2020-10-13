@@ -37,7 +37,7 @@ public class ConverterController {
 
     @GetMapping("/history")
     public String history(Map<String, Object> model) {
-        Iterable<History> histories = historyRepository.findAll();
+        Iterable<History> histories = historyRepository.findAllByOrderByDATE();
         model.put("histories", histories);
         return "history";
     }
@@ -47,9 +47,9 @@ public class ConverterController {
                        @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date date, Map<String, Object> model) {
         Iterable<History> histories;
         if (date != null) {
-            histories = historyRepository.findAllByDate(date);
+            histories = historyRepository.findAllByDATE(date);
         } else {
-            histories = historyRepository.findAll();
+            histories = historyRepository.findAllByOrderByDATE();
         }
         model.put("histories", histories);
         return "history";
@@ -59,16 +59,17 @@ public class ConverterController {
     public String converter(Model amountReceived, Model totalAmount, Model originalCurrency,
                             Model targetCurrency, Model originalChar, Model targetChar) {
         //todo: вынести отсюда
+        History lastConvert = historyRepository.findTopByOrderByIDDesc().orElseThrow();
         List<Currency> list = responseService.getCurrenciesInfo();
         currencyRepository.saveAll(list);
-        BigDecimal total = historyRepository.findTotalAmountWithMaxId();
+        BigDecimal total = lastConvert.getTOTAL_AMOUNT();
         if (total == null) total = new BigDecimal(0);
-        BigDecimal amount = historyRepository.findAmountReceivedWithMaxId();
+        BigDecimal amount = lastConvert.getAMOUNT_RECEIVED();
         if (amount == null) amount = new BigDecimal(0);
         totalAmount.addAttribute("totalAmount", total);
         amountReceived.addAttribute("amountReceived", amount);
-        String original = historyRepository.findOriginalCurrencyWithMaxId();
-        String target = historyRepository.findTargetCurrencyWithMaxId();
+        String original = lastConvert.getORIGINAL_CURRENCY();
+        String target = lastConvert.getTARGET_CURRENCY();
         if (original == null) original = "Введите валюту";
         if (target == null) target = "Введите валюту";
         originalCurrency.addAttribute("originalCurrency", original);

@@ -26,4 +26,15 @@ public class Currency {
     private int nominal;
     private BigDecimal value;
 
+    @Override
+    public String toString() {
+        return "Currency{" +
+                "cbId='" + cbId + '\'' +
+                ", numCode=" + numCode +
+                ", charCode='" + charCode + '\'' +
+                ", description='" + description + '\'' +
+                ", nominal=" + nominal +
+                ", value=" + value +
+                '}';
+    }
 }
