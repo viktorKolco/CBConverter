@@ -59,6 +59,7 @@ public class ConverterController {
     public String converter(Model amountReceived, Model totalAmount, Model originalCurrency,
                             Model targetCurrency, Model originalChar, Model targetChar) {
         //todo: вынести отсюда
+        //fixMe: исправить для случая, если база истории пустая
         History lastConvert = historyRepository.findTopByOrderByIDDesc().orElseThrow();
         List<Currency> list = responseService.getCurrenciesInfo();
         currencyRepository.saveAll(list);

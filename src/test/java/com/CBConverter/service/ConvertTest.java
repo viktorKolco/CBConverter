@@ -38,4 +38,11 @@ public class ConvertTest {
         BigDecimal numb = BigDecimal.valueOf(1);
         Assert.assertTrue(converterService.convert("USD", "RUB", numb).compareTo(numb) > 0);
     }
+
+    @Test
+    public void nullInputTest() {
+        BigDecimal numb = BigDecimal.valueOf(1);
+        Assert.assertTrue(converterService.convert("EUR", "USD", null).compareTo(numb) > 0);
+    }
+
 }
