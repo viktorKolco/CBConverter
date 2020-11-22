@@ -53,18 +53,18 @@ public class ConverterController {
     public String converter(Model amountReceived, Model totalAmount, Model originalCurrency,
                             Model targetCurrency, Model originalChar, Model targetChar) {
         //todo: вынести отсюда
-        //fixMe: исправить для случая, если база истории пустая
-        History lastConvert = historyRepository.findTopByOrderByIDDesc().orElseThrow();
+        History lastConvert = historyRepository.findTopByOrderByIDDesc()
+                .orElse(new History("USD (Доллар США)",
+                        "RUB (Российский рубль)",
+                        BigDecimal.valueOf(1),
+                        BigDecimal.valueOf(30),
+                        LocalDateTime.now()));
         BigDecimal total = lastConvert.getTOTAL_AMOUNT();
-        if (total == null) total = new BigDecimal(0);
         BigDecimal amount = lastConvert.getAMOUNT_RECEIVED();
-        if (amount == null) amount = new BigDecimal(0);
         totalAmount.addAttribute("totalAmount", total);
         amountReceived.addAttribute("amountReceived", amount);
         String original = lastConvert.getORIGINAL_CURRENCY();
         String target = lastConvert.getTARGET_CURRENCY();
-        if (original == null) original = "Введите валюту";
-        if (target == null) target = "Введите валюту";
         originalCurrency.addAttribute("originalCurrency", original);
         targetCurrency.addAttribute("targetCurrency", target);
         originalChar.addAttribute("originalChar", original.substring(0, 3));
