@@ -4,6 +4,7 @@ import com.CBConverter.entities.Currency;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -24,28 +25,29 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
+import static java.lang.String.format;
+
 @Slf4j
 @Service
 @RequiredArgsConstructor
 public class ResponseServiceImpl implements ResponseService {
 
     private static final List<Currency> list = new ArrayList<>();
+    private static final String url = "http://www.cbr.ru/scripts/XML_daily.asp";
 
     public List<Currency> getCurrenciesInfo() {
 
-        String url = "http://www.cbr.ru/scripts/XML_daily.asp";
-        HttpURLConnection connection = null;
+        HttpURLConnection connection;
         try {
             connection = (HttpURLConnection) new URL(url).openConnection();
+            Assert.notNull(connection, "Соединение не установлено");
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new IllegalStateException(format("Не получилось установить соединение с '%s': %s", url, e.getMessage()));
         }
         try {
-            assert connection != null;
             return parseXML(loadXMLFromString(toStringByInputStream(new InputStreamReader(connection.getInputStream(), "Cp1251"))));
         } catch (ParserConfigurationException | IOException | SAXException e) {
-            e.printStackTrace();
-            throw new AssertionError("Не получилось получить курсы валют");
+            throw new IllegalStateException(format("Не получилось получить курсы валют: %s", e.getMessage()));
         }
     }
 

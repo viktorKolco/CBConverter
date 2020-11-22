@@ -1,12 +1,10 @@
 package com.CBConverter.controller;
 
-import com.CBConverter.entities.Currency;
 import com.CBConverter.entities.History;
-import com.CBConverter.repository.CurrencyRepository;
 import com.CBConverter.repository.HistoryRepository;
 import com.CBConverter.service.ConverterService;
-import com.CBConverter.service.ResponseService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.stereotype.Service;
@@ -16,12 +14,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
-import java.time.ZoneId;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.Date;
-import java.util.List;
 import java.util.Map;
 
+@Slf4j
 @Controller
 @Service
 @RequiredArgsConstructor
@@ -29,11 +27,7 @@ public class ConverterController {
 
     private final HistoryRepository historyRepository;
 
-    private final CurrencyRepository currencyRepository;
-
     private final ConverterService converterService;
-
-    private final ResponseService responseService;
 
     @GetMapping("/history")
     public String history(Map<String, Object> model) {
@@ -61,8 +55,6 @@ public class ConverterController {
         //todo: вынести отсюда
         //fixMe: исправить для случая, если база истории пустая
         History lastConvert = historyRepository.findTopByOrderByIDDesc().orElseThrow();
-        List<Currency> list = responseService.getCurrenciesInfo();
-        currencyRepository.saveAll(list);
         BigDecimal total = lastConvert.getTOTAL_AMOUNT();
         if (total == null) total = new BigDecimal(0);
         BigDecimal amount = lastConvert.getAMOUNT_RECEIVED();
@@ -83,16 +75,16 @@ public class ConverterController {
     @PostMapping("/converter")
     public String add(@RequestParam String postOriginalCurrency,
                       @RequestParam String postTargetCurrency, @RequestParam BigDecimal postAmountReceived) {
-        History history = new History(
-                converterService.toDescription(postOriginalCurrency),
-                converterService.toDescription(postTargetCurrency),
-                postAmountReceived,
-                converterService.convert(postOriginalCurrency, postTargetCurrency, postAmountReceived),
-                Date.from(LocalDate.now()
-                        .atStartOfDay()
-                        .atZone(ZoneId.systemDefault())
-                        .toInstant()));
-        historyRepository.save(history);
+        if (postAmountReceived != null) {
+            History history = new History(
+                    converterService.toDescription(postOriginalCurrency),
+                    converterService.toDescription(postTargetCurrency),
+                    postAmountReceived,
+                    converterService.convert(postOriginalCurrency, postTargetCurrency, postAmountReceived),
+                    LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS));
+            historyRepository.save(history);
+            log.info("Произведена конвертация : '{}'", history);
+        }
         return "redirect:/converter";
     }
 

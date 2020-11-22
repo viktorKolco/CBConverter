@@ -9,7 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import java.math.BigDecimal;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -24,9 +24,9 @@ public class History {
     private String ORIGINAL_CURRENCY;
     private String TARGET_CURRENCY;
     private BigDecimal TOTAL_AMOUNT;
-    private Date DATE;
+    private LocalDateTime DATE;
 
-    public History(String originalCurrency, String targetCurrency, BigDecimal amountReceived, BigDecimal totalAmount, Date date) {
+    public History(String originalCurrency, String targetCurrency, BigDecimal amountReceived, BigDecimal totalAmount, LocalDateTime date) {
         this.ORIGINAL_CURRENCY = originalCurrency;
         this.TARGET_CURRENCY = targetCurrency;
         this.AMOUNT_RECEIVED = amountReceived;

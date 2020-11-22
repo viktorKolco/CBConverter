@@ -18,15 +18,15 @@ import static java.lang.String.format;
 public class ConverterServiceImpl implements ConverterService {
 
     private final CurrencyRepository currencyRepository;
-    //todo: NPE when amountReceived == null
+
     public BigDecimal convert(String originalCharCode, String targetCharCode, BigDecimal amountReceived) {
         BigDecimal originalCurrencyInRubles = currencyRepository.findByCharCode(originalCharCode)
-                .map(originalCurrency -> originalCurrency.getValue()
-                        .multiply(amountReceived)
+                .map(originalCurrency -> amountReceived
+                        .multiply(originalCurrency.getValue())
                         .divide(BigDecimal.valueOf(originalCurrency.getNominal()), RoundingMode.HALF_UP))
                 .or(() -> {
                     if ("RUB".equals(originalCharCode)) {
-                        return Optional.ofNullable(amountReceived);
+                        return Optional.of(amountReceived);
                     } else return Optional.empty();
                 })
                 .orElseThrow();
@@ -34,7 +34,7 @@ public class ConverterServiceImpl implements ConverterService {
                 .map(targetCurrency ->
                         originalCurrencyInRubles.multiply(
                                 BigDecimal.valueOf(targetCurrency.getNominal()))
-                                .divide(targetCurrency.getValue(), RoundingMode.HALF_UP))
+                                .divide(targetCurrency.getValue(), 3, RoundingMode.HALF_UP))
                 .or(() -> {
                     if ("RUB".equals(targetCharCode)) {
                         return Optional.of(originalCurrencyInRubles.divide(new BigDecimal(1), 3, RoundingMode.HALF_UP));
