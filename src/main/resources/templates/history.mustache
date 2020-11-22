@@ -13,7 +13,10 @@
     <input type="hidden" name="_csrf" value="{{_csrf.token}}"/>
     <a href="/converter">Назад к конвертеру</a>
 </div>
-
+<form method="post" action="deleteAll">
+    <input type="hidden" name="_csrf" value="{{_csrf.token}}"/>
+    <button type="submit">Удалить все</button>
+</form>
 <body>
 <div align="center">
     <form method="post" action="filter">
@@ -32,6 +35,7 @@
         <th>Исходная сумма</th>
         <th>Получаемая сумма</th>
         <th>Дата</th>
+        <th>Действие</th>
     </tr>
     {{#histories}}
         <tr>
@@ -41,6 +45,12 @@
             <td>{{TOTAL_AMOUNT}}</td>
             <td>
                 <output typeof="date">{{DATE}}</output>
+            </td>
+            <td>
+                <form method="post" action="/delete">
+                    <input type="hidden" name="_csrf" value="{{_csrf.token}}"/>
+                    <button type="submit" value="{{ID}}" name="id">удалить</button>
+                </form>
             </td>
         </tr>
     {{/histories}}

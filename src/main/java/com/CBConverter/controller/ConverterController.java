@@ -88,6 +88,18 @@ public class ConverterController {
         return "redirect:/converter";
     }
 
+    @PostMapping("deleteAll")
+    public String deleteAll() {
+        historyRepository.deleteAll();
+        return "redirect:/history";
+    }
+
+    @PostMapping("delete")
+    public String delete(@RequestParam("id") Integer id) {
+        historyRepository.deleteById(id);
+        return "redirect:/history";
+    }
+
     @GetMapping
     public String main() {
         return "main";
