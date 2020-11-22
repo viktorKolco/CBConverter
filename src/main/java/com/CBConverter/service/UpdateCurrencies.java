@@ -16,7 +16,7 @@ public class UpdateCurrencies {
     private final CurrencyRepository currencyRepository;
     private final ResponseService responseService;
 
-    @Scheduled(fixedRate = 120000)
+    @Scheduled(fixedRate = 300000)
     private void updateCurrencies() {
         log.info("=== Обновление курсов валют по шедулеру ===");
         List<Currency> list = responseService.getCurrenciesInfo();

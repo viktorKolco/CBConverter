@@ -3,6 +3,7 @@ package com.CBConverter.controller;
 import com.CBConverter.entities.History;
 import com.CBConverter.repository.HistoryRepository;
 import com.CBConverter.service.ConverterService;
+import com.CBConverter.service.ResponseService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -29,6 +30,8 @@ public class ConverterController {
 
     private final ConverterService converterService;
 
+    private final ResponseService responseService;
+
     @GetMapping("/history")
     public String history(Map<String, Object> model) {
         Iterable<History> histories = historyRepository.findAllByOrderByDATE();
@@ -36,6 +39,7 @@ public class ConverterController {
         return "history";
     }
 
+    //fixMe: поиск по дате не работает
     @PostMapping("filter")
     public String date(@RequestParam("date")
                        @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date date, Map<String, Object> model) {
@@ -98,6 +102,13 @@ public class ConverterController {
     public String delete(@RequestParam("id") Integer id) {
         historyRepository.deleteById(id);
         return "redirect:/history";
+    }
+
+    @GetMapping("refresh")
+    public String refresh() {
+        log.info("Обновление курсов валют по требованию пользователя");
+        responseService.getCurrenciesInfo();
+        return "redirect:/converter";
     }
 
     @GetMapping

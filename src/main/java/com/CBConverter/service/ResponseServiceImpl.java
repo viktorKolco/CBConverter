@@ -75,9 +75,9 @@ public class ResponseServiceImpl implements ResponseService {
         String description = null;
         Node root = document.getDocumentElement();
         NodeList valutes = root.getChildNodes();
-        log.info("==================================");
-        log.info("   Информация по валютам из ЦБ:   ");
-        log.info("==================================");
+        log.debug("==================================");
+        log.debug("   Информация по валютам из ЦБ:   ");
+        log.debug("==================================");
         for (int i = 0; i < valutes.getLength(); i++) {
             id = valutes.item(i).getAttributes().getNamedItem("ID").getNodeValue();
             Node valute = valutes.item(i);
@@ -89,23 +89,23 @@ public class ResponseServiceImpl implements ResponseService {
                         switch (j) {
                             case (0):
                                 numCode = Integer.parseInt(prop.getChildNodes().item(0).getTextContent());
-                                log.info("numCode: '{}'", numCode);
+                                log.debug("numCode: '{}'", numCode);
                                 break;
                             case (1):
                                 charCode = prop.getChildNodes().item(0).getTextContent();
-                                log.info("charCode: '{}'", charCode);
+                                log.debug("charCode: '{}'", charCode);
                                 break;
                             case (2):
                                 nominal = Integer.parseInt(prop.getChildNodes().item(0).getTextContent());
-                                log.info("nominal: '{}'", nominal);
+                                log.debug("nominal: '{}'", nominal);
                                 break;
                             case (3):
                                 description = prop.getChildNodes().item(0).getTextContent();
-                                log.info("description: '{}'", description);
+                                log.debug("description: '{}'", description);
                                 break;
                             case (4):
                                 value = Double.parseDouble(prop.getChildNodes().item(0).getTextContent().replace(',', '.'));
-                                log.info("value: '{}'", value);
+                                log.debug("value: '{}'", value);
                                 break;
                             default:
                                 break;
@@ -114,7 +114,8 @@ public class ResponseServiceImpl implements ResponseService {
                 }
             }
             list.add(new Currency(id, numCode, charCode, description, nominal, new BigDecimal(value).setScale(3, RoundingMode.HALF_UP)));
-            log.info("==================================");
+            log.debug("==================================");
+            log.info("Курсы валют успешно обновлены");
         }
         return list;
     }
