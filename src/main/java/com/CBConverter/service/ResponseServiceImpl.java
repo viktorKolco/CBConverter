@@ -115,8 +115,8 @@ public class ResponseServiceImpl implements ResponseService {
             }
             list.add(new Currency(id, numCode, charCode, description, nominal, new BigDecimal(value).setScale(3, RoundingMode.HALF_UP)));
             log.debug("==================================");
-            log.info("Курсы валют успешно обновлены");
         }
+        log.info("Курсы валют успешно обновлены");
         return list;
     }
 }

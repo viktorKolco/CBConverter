@@ -7,6 +7,7 @@ import com.CBConverter.service.ResponseService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
@@ -92,6 +93,7 @@ public class ConverterController {
         return "redirect:/converter";
     }
 
+    @Secured("USER")
     @PostMapping("deleteAll")
     public String deleteAll() {
         historyRepository.deleteAll();
