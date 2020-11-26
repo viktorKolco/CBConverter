@@ -26,6 +26,8 @@ public class User {
     private String name;
     private String password;
     private boolean active;
+    private String email;
+    private String activationCode;
 
     @Column(name = "role", length = 4)
     @Enumerated(EnumType.STRING)
