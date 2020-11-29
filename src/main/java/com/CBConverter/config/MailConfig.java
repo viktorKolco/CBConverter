@@ -1,5 +1,6 @@
 package com.CBConverter.config;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -10,15 +11,20 @@ import java.util.Properties;
 @Configuration
 public class MailConfig {
 
-    private final static String host = "smtp.yandex.ru";
-    //todo: поменять почту для рассылок
-    private final static String username = "kalko1996@yandex.ru";
+    @Value("${spring.mail.host}")
+    private String host;
 
-    private final static String password = "";
+    @Value("${spring.mail.username}")
+    private String username;
 
-    private final static int port = 465;
+    @Value("${spring.mail.password}")
+    private String password;
 
-    private final static String debug = "true";
+    @Value("${spring.mail.port}")
+    private int port;
+
+    @Value("${mail.debug}")
+    private String debug;
 
     @Bean
     public JavaMailSender getMailSender() {

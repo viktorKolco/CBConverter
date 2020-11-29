@@ -3,6 +3,7 @@ package com.CBConverter.service;
 import com.CBConverter.entities.Currency;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 import org.w3c.dom.Document;
@@ -33,7 +34,9 @@ import static java.lang.String.format;
 public class ResponseServiceImpl implements ResponseService {
 
     private static final List<Currency> list = new ArrayList<>();
-    private static final String url = "http://www.cbr.ru/scripts/XML_daily.asp";
+
+    @Value("${url}")
+    private String url;
 
     public List<Currency> getCurrenciesInfo() {
 

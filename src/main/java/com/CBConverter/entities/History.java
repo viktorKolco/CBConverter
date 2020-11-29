@@ -39,7 +39,7 @@ public class History {
         return "History{" +
                 "ID=" + ID +
                 ", AMOUNT_RECEIVED=" + AMOUNT_RECEIVED +
-                ", ORIGINAL_currency='" + ORIGINAL_CURRENCY + '\'' +
+                ", ORIGINAL_CURRENCY='" + ORIGINAL_CURRENCY + '\'' +
                 ", TARGET_CURRENCY='" + TARGET_CURRENCY + '\'' +
                 ", TOTAL_AMOUNT=" + TOTAL_AMOUNT +
                 ", DATE=" + DATE +

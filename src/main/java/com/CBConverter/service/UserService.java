@@ -21,9 +21,8 @@ public class UserService {
     private final MailSender mailSender;
     private final static String activationMessage = "Пожалуйста, пройдите по ссылке для активации аккаунта:" +
             " http://localhost:8082/activate/%s";
-    private final static String afterActivationMessage = "Спасибо, что вы с нами, %s! Ваш аккаунт был успешно активирован.";
 
-    public void addUser(User user) { //todo: напсать исключение CantAddUserException
+    public void addUser(User user) { //todo: написать исключение CantAddUserException
         User userFromDB = userRepository.findByName(user.getName());
         if (userFromDB == null && !user.getEmail().isEmpty()) {
             user.setPassword(passwordEncoder.encode(user.getPassword()));
@@ -46,7 +45,6 @@ public class UserService {
         user.setActive(true);
         userRepository.save(user);
         log.debug("Пользователь '{}' был активирован и обновлен: '{}'", user.getId(), user.toString());
-        mailSender.send(user.getEmail(), "Активация прошла успешно", format(afterActivationMessage, user.getName()));
         return true;
     }
 }
