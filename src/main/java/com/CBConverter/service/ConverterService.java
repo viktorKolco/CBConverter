@@ -5,7 +5,7 @@ import java.math.BigDecimal;
 public interface ConverterService {
 
     /**
-     * <p>Произвести конвертирование.</p>
+     * <p>Произвести конвертирование валют.</p>
      *
      * @param originalCurrency оригинальный курс, с которого производится конвертиирование
      * @param targetCurrency   курс, в который необходимо конвертировать

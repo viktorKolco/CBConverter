@@ -1,15 +1,14 @@
 package com.CBConverter.controller;
 
 import com.CBConverter.entities.History;
-import com.CBConverter.repository.HistoryRepository;
-import com.CBConverter.service.ConverterService;
+import com.CBConverter.service.HistoryService;
 import com.CBConverter.service.ResponseService;
+import com.CBConverter.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
-import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,25 +16,22 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
-import java.util.Date;
 import java.util.Map;
 
 @Slf4j
 @Controller
-@Service
 @RequiredArgsConstructor
 public class ConverterController {
 
-    private final HistoryRepository historyRepository;
-
-    private final ConverterService converterService;
-
     private final ResponseService responseService;
+
+    private final HistoryService historyService;
+
+    private final UserService userService;
 
     @GetMapping("/history")
     public String history(Map<String, Object> model) {
-        Iterable<History> histories = historyRepository.findAllByOrderByDATE();
+        Iterable<History> histories = historyService.findAllByCurrentUser();
         model.put("histories", histories);
         return "history";
     }
@@ -43,27 +39,16 @@ public class ConverterController {
     //fixMe: поиск по дате не работает
     @PostMapping("filter")
     public String date(@RequestParam("date")
-                       @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date date, Map<String, Object> model) {
-        Iterable<History> histories;
-        if (date != null) {
-            histories = historyRepository.findAllByDATE(date);
-        } else {
-            histories = historyRepository.findAllByOrderByDATE();
-        }
-        model.put("histories", histories);
+                       @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDateTime date, Map<String, Object> model) {
+        model.put("histories", historyService.getByDate(date));
         return "history";
     }
 
     @GetMapping("/converter")
     public String converter(Model amountReceived, Model totalAmount, Model originalCurrency,
                             Model targetCurrency, Model originalChar, Model targetChar) {
-        //todo: вынести отсюда
-        History lastConvert = historyRepository.findTopByOrderByIDDesc()
-                .orElse(new History("USD (Доллар США)",
-                        "RUB (Российский рубль)",
-                        BigDecimal.valueOf(1),
-                        BigDecimal.valueOf(30),
-                        LocalDateTime.now()));
+        History lastConvert = historyService.getLastConvert();
+
         BigDecimal total = lastConvert.getTOTAL_AMOUNT();
         BigDecimal amount = lastConvert.getAMOUNT_RECEIVED();
         totalAmount.addAttribute("totalAmount", total);
@@ -80,29 +65,21 @@ public class ConverterController {
     @PostMapping("/converter")
     public String add(@RequestParam String postOriginalCurrency,
                       @RequestParam String postTargetCurrency, @RequestParam BigDecimal postAmountReceived) {
-        if (postAmountReceived != null) {
-            History history = new History(
-                    converterService.toDescription(postOriginalCurrency),
-                    converterService.toDescription(postTargetCurrency),
-                    postAmountReceived,
-                    converterService.convert(postOriginalCurrency, postTargetCurrency, postAmountReceived),
-                    LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS));
-            historyRepository.save(history);
-            log.info("Произведена конвертация : '{}'", history);
-        }
+        historyService.addHistory(postOriginalCurrency, postTargetCurrency, postAmountReceived);
         return "redirect:/converter";
     }
 
-    @Secured("USER")
+    @PreAuthorize("hasAuthority('ADMIN')")
     @PostMapping("deleteAll")
     public String deleteAll() {
-        historyRepository.deleteAll();
+        historyService.deleteAll();
         return "redirect:/history";
     }
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @PostMapping("delete")
     public String delete(@RequestParam("id") Integer id) {
-        historyRepository.deleteById(id);
+        historyService.deleteById(id);
         return "redirect:/history";
     }
 
@@ -114,7 +91,8 @@ public class ConverterController {
     }
 
     @GetMapping
-    public String main() {
+    public String main(Model userName) {
+        userName.addAttribute("userName", userService.getCurrentUser().getName());
         return "main";
     }
 

@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>CBConverter</title>
+</head>
+<h1><p align="center">Конвертер валют</p></h1>
+<body>
+<h1><p align="center">Активация</p></h1>
+<form action="/login" method="post">
+
+    <div><p align="center"><label> <input type="text" name="username" placeholder="Логин"/> </label></p></div>
+    <div><p align="center"><label> <input type="password" name="password" placeholder="Пароль"/> </label></p></div>
+    <input type="hidden" name="_csrf" value="{{_csrf.token}}"/>
+    <div><p align="center"><input type="submit" value="Войти"/></p></div>
+
+</form>
+</body>
+</html>

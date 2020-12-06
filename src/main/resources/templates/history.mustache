@@ -30,6 +30,7 @@
 <input type="hidden" name="_csrf" value="{{_csrf.token}}"/>
 <table align="center">
     <tr>
+        <th>ID пользователя</th>
         <th>Исходная валюта</th>
         <th>Целевая валюта</th>
         <th>Исходная сумма</th>
@@ -39,11 +40,12 @@
     </tr>
     {{#histories}}
         <tr>
-            <td>{{ORIGINAL_CURRENCY}}</td>
-            <td>{{TARGET_CURRENCY}}</td>
-            <td>{{AMOUNT_RECEIVED}}</td>
-            <td>{{TOTAL_AMOUNT}}</td>
-            <td>
+            <td align="center">{{USERID}}</td>
+            <td align="center">{{ORIGINAL_CURRENCY}}</td>
+            <td align="center">{{TARGET_CURRENCY}}</td>
+            <td align="center">{{AMOUNT_RECEIVED}}</td>
+            <td align="center">{{TOTAL_AMOUNT}}</td>
+            <td align="center">
                 <output typeof="date">{{DATE}}</output>
             </td>
             <td>

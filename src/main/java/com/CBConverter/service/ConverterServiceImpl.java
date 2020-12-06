@@ -43,10 +43,10 @@ public class ConverterServiceImpl implements ConverterService {
                 .orElseThrow();
     }
 
-
     public String toDescription(String currency) {
         Currency inputCurrency = currencyRepository.findByCharCode(currency).orElse(null);
         return format("%s (%s)", currency, (inputCurrency == null) ? "Российский рубль"
                 : inputCurrency.getDescription());
     }
+
 }

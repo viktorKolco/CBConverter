@@ -22,14 +22,25 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id", nullable = false)
     private int id;
+
+    @Column(name = "name", nullable = false)
     private String name;
+
+    @Column(name = "password", nullable = false)
     private String password;
+
+    @Column(name = "active", nullable = false)
     private boolean active;
+
+    @Column(name = "email", nullable = false)
     private String email;
+
+    @Column(name = "activation_code")
     private String activationCode;
 
-    @Column(name = "role", length = 4)
+    @Column(name = "role", length = 5)
     @Enumerated(EnumType.STRING)
     private UserRole role;
 
