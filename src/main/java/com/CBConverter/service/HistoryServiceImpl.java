@@ -8,13 +8,17 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
+import java.util.List;
 
 @Slf4j
 @Service
 @RequiredArgsConstructor
 public class HistoryServiceImpl implements HistoryService {
+    private final static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
     private final HistoryRepository historyRepository;
 
@@ -49,10 +53,13 @@ public class HistoryServiceImpl implements HistoryService {
     }
 
     @Override
-    public Iterable<History> getByDate(LocalDateTime date) {
-        Iterable<History> histories;
-        if (date != null) {
-            histories = historyRepository.findAllByDATE(date);
+    public List<History> getByDate(String date) {
+        List<History> histories;
+
+        if (date != null && !date.equals("")) {
+            LocalDate targetDate = LocalDate.parse(date, formatter);
+            histories = historyRepository.findAllByDATELessThanEqualAndDATEGreaterThanEqual(
+                    targetDate.plusDays(1).atStartOfDay(), targetDate.atStartOfDay());
         } else {
             histories = historyRepository.findAllByOrderByDATE();
         }
@@ -70,7 +77,7 @@ public class HistoryServiceImpl implements HistoryService {
     }
 
     @Override
-    public Iterable<History> findAllByCurrentUser() {
+    public List<History> findAllByCurrentUser() {
         return userService.getCurrentUser().getRole() == UserRole.ADMIN
                 ? historyRepository.findAllByOrderByDATE()
                 : historyRepository.findAllByUSERIDOrderByDATE(userService.getCurrentUser().getId());

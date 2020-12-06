@@ -5,6 +5,7 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -12,9 +13,12 @@ public interface HistoryRepository extends CrudRepository<History, Integer> {
 
     Optional<History> findTopByOrderByIDDesc();
 
-    Iterable<History> findAllByDATE(LocalDateTime date);
+    List<History> findAllByDATE(LocalDateTime date);
 
-    Iterable<History> findAllByUSERIDOrderByDATE(int userId);
+    List<History> findAllByUSERIDOrderByDATE(int userId);
 
-    Iterable<History> findAllByOrderByDATE();
+    List<History> findAllByOrderByDATE();
+
+    List<History> findAllByDATELessThanEqualAndDATEGreaterThanEqual(LocalDateTime endDate, LocalDateTime startDate);
+
 }

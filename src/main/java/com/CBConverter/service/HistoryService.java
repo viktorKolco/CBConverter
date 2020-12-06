@@ -4,7 +4,7 @@ import com.CBConverter.entities.History;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 public interface HistoryService {
@@ -28,7 +28,7 @@ public interface HistoryService {
      * @param date дата, на которую необзодимо получить конвертации
      * @return конвертации
      **/
-    Iterable<History> getByDate(LocalDateTime date);
+    List<History> getByDate(String date);
 
     /**
      * <p>Удаляет все конвертации из БД.</p>
@@ -47,5 +47,5 @@ public interface HistoryService {
      * <p>Получить все конвертации по конкретному пользователю.</p>
      * @return все конвертации пользователя
      **/
-    Iterable<History> findAllByCurrentUser();
+    List<History> findAllByCurrentUser();
 }

@@ -1,12 +1,12 @@
 package com.CBConverter.controller;
 
 import com.CBConverter.entities.History;
+import com.CBConverter.entities.UserRole;
 import com.CBConverter.service.HistoryService;
 import com.CBConverter.service.ResponseService;
 import com.CBConverter.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Map;
 
 @Slf4j
@@ -31,16 +31,21 @@ public class ConverterController {
 
     @GetMapping("/history")
     public String history(Map<String, Object> model) {
-        Iterable<History> histories = historyService.findAllByCurrentUser();
-        model.put("histories", histories);
+        List<History> histories = historyService.findAllByCurrentUser();
+
+        model.put("HISTORIES", histories);
+        model.put("isADMIN", userService.getCurrentUser().getRole() == UserRole.ADMIN);
+        model.put("isHistoryEmpty", histories.isEmpty());
         return "history";
     }
 
-    //fixMe: поиск по дате не работает
     @PostMapping("filter")
-    public String date(@RequestParam("date")
-                       @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDateTime date, Map<String, Object> model) {
-        model.put("histories", historyService.getByDate(date));
+    public String date(@RequestParam("date") String date, Map<String, Object> model) {
+        List<History> histories = historyService.getByDate(date);
+
+        model.put("HISTORIES", histories);
+        model.put("isADMIN", userService.getCurrentUser().getRole() == UserRole.ADMIN);
+        model.put("isHistoryEmpty", histories.isEmpty());
         return "history";
     }
 
