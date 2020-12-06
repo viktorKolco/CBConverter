@@ -13,8 +13,6 @@ public interface HistoryRepository extends CrudRepository<History, Integer> {
 
     Optional<History> findTopByOrderByIDDesc();
 
-    List<History> findAllByDATE(LocalDateTime date);
-
     List<History> findAllByUSERIDOrderByDATE(int userId);
 
     List<History> findAllByOrderByDATE();
